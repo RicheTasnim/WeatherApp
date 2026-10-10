@@ -177,18 +177,21 @@ const WMO_CODES = {
   },
 };
 
-export const getWeather = async (place) => {
-  //   console.log("functions :", place);
-  const { lat, lon, name } = place;
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m&current=temperature_2m,precipitation,weather_code,rain,relative_humidity_2m,apparent_temperature,is_day,wind_speed_10m`;
+export const getWeather = async (plcae) => {
+  //   console.log("Functions", plcae);
+  const { lat, lon } = plcae;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,rain,apparent_temperature,is_day`;
 
   const result = await fetch(url);
   //   console.log(await result.json());
   const data = await result.json();
   const now = data.current;
+  // console.log(now.weather_code);
   if (!now) {
-    throw new Error("Weather detail get failed");
+    throw new Error("Weather detials get failed");
   }
+
+  // weather.name = weather["name"]
 
   const weather = WMO_CODES[now.weather_code];
 
@@ -197,7 +200,7 @@ export const getWeather = async (place) => {
 
   return {
     temperature: Math.round(now.temperature_2m),
-    humidity: Math.round(now.relative_humidity_2m),
+    humidity: now.relative_humidity_2m,
     windSpeed: Math.round(now.wind_speed_10m),
     feelsLike: Math.round(now.apparent_temperature),
     condition: weather.condition,
