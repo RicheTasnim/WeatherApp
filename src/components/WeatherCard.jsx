@@ -57,7 +57,7 @@ export default function WeatherCard({ place, weather }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-3 max-[560px]:grid-cols-1">
+        <div className="grid grid-cols-3 gap-3 max-[560px]:grid-cols-1 md:grid-cols-1 lg:grid-cols-3">
           {stats.map(({ icon: Icon, label, value }) => (
             <div
               key={label}
